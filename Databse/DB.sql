@@ -3,16 +3,7 @@ create database BMCSDL_QLSinhVien
 go
 use BMCSDL_QLSinhVien
 go
-create table SinhVien
-(
-	MaSV nvarchar(20) primary key,
-	HoTen nvarchar(100) not null,
-	NgaySinh Datetime,
-	DiaChi nvarchar(200),
-	TenDN nvarchar(100) not null,
-	MatKhau varbinary not null
-)
-go
+
 create table NhanVien
 (
 	MaNV nvarchar(20) primary key,
@@ -32,6 +23,19 @@ create table Lop
 	MaNV nvarchar(20) foreign key (MaNV) REFERENCES NhanVien(MaNV)
 )
 go
+
+create table SinhVien
+(
+	MaSV nvarchar(20) primary key,
+	HoTen nvarchar(100) not null,
+	NgaySinh Datetime,
+	DiaChi nvarchar(200),
+	MaLop varchar(20) foreign key (MaLop) references Lop(MaLop),
+	TenDN nvarchar(100) not null,
+	MatKhau varbinary not null
+)
+go
+
 create table HocPhan
 (
 	MaHP varchar(20) primary key,
