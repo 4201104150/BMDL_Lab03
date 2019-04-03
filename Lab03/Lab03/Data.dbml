@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="BMCSDL_QLSinhVien" Class="DataDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=.;Initial Catalog=BMCSDL_QLSinhVien;Integrated Security=True" SettingsObjectName="Lab03.Properties.Settings" SettingsPropertyName="BMCSDL_QLSinhVienConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.BANGDIEM" Member="BANGDIEMs">
+    <Type Name="BANGDIEM">
+      <Column Name="MASV" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="MAHP" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="DIEMTHI" Type="System.Data.Linq.Binary" DbType="VarBinary(200)" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="HOCPHAN_BANGDIEM" Member="HOCPHAN" ThisKey="MAHP" OtherKey="MAHP" Type="HOCPHAN" IsForeignKey="true" />
+      <Association Name="SINHVIEN_BANGDIEM" Member="SINHVIEN" ThisKey="MASV" OtherKey="MASV" Type="SINHVIEN" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.HOCPHAN" Member="HOCPHANs">
+    <Type Name="HOCPHAN">
+      <Column Name="MAHP" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENHP" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="SOTC" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="HOCPHAN_BANGDIEM" Member="BANGDIEMs" ThisKey="MAHP" OtherKey="MAHP" Type="BANGDIEM" />
+    </Type>
+  </Table>
+  <Table Name="dbo.LOP" Member="LOPs">
+    <Type Name="LOP">
+      <Column Name="MALOP" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="TENLOP" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MANV" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="LOP_SINHVIEN" Member="SINHVIENs" ThisKey="MALOP" OtherKey="MALOP" Type="SINHVIEN" />
+      <Association Name="NHANVIEN_LOP" Member="NHANVIEN" ThisKey="MANV" OtherKey="MANV" Type="NHANVIEN" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.NHANVIEN" Member="NHANVIENs">
+    <Type Name="NHANVIEN">
+      <Column Name="MANV" Type="System.String" DbType="VarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="LUONG" Type="System.Data.Linq.Binary" DbType="VarBinary(200)" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="TENDN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MATKHAU" Type="System.Data.Linq.Binary" DbType="VarBinary(200) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Column Name="PUBKEY" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Association Name="NHANVIEN_LOP" Member="LOPs" ThisKey="MANV" OtherKey="MANV" Type="LOP" />
+    </Type>
+  </Table>
+  <Table Name="dbo.SINHVIEN" Member="SINHVIENs">
+    <Type Name="SINHVIEN">
+      <Column Name="MASV" Type="System.String" DbType="NVarChar(20) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="NGAYSINH" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DIACHI" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="MALOP" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="TENDN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MATKHAU" Type="System.Data.Linq.Binary" DbType="VarBinary(200) NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="SINHVIEN_BANGDIEM" Member="BANGDIEMs" ThisKey="MASV" OtherKey="MASV" Type="BANGDIEM" />
+      <Association Name="LOP_SINHVIEN" Member="LOP" ThisKey="MALOP" OtherKey="MALOP" Type="LOP" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Function Name="dbo.SP_SEL_PUBLIC_NHANVIEN" Method="SP_SEL_PUBLIC_NHANVIEN">
+    <Parameter Name="TENDN" Parameter="tENDN" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="MATKHAU" Parameter="mATKHAU" Type="System.String" DbType="NVarChar(100)" />
+    <ElementType Name="SP_SEL_PUBLIC_NHANVIENResult">
+      <Column Name="MANV" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="LUONGCB" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_INS_PUBLIC_NHANVIEN" Method="SP_INS_PUBLIC_NHANVIEN">
+    <Parameter Name="MANV" Parameter="mANV" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="HOTEN" Parameter="hOTEN" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="EMAIL" Parameter="eMAIL" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="LUONG" Parameter="lUONG" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="TENDN" Parameter="tENDN" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="MATKHAU" Parameter="mATKHAU" Type="System.String" DbType="NVarChar(20)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_INS_SINHVIEN" Method="SP_INS_SINHVIEN">
+    <Parameter Name="masv" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="hoten" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="ngaysinh" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="diachi" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="malop" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="tendn" Type="System.String" DbType="NVarChar(20)" />
+    <Parameter Name="matkhau" Type="System.String" DbType="NVarChar(16)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.XLDN" Method="XLDN">
+    <Parameter Name="Username" Parameter="username" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="Password" Parameter="password" Type="System.String" DbType="VarChar(20)" />
+    <ElementType Name="XLDNResult">
+      <Column Name="MANV" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="EMAIL" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+      <Column Name="LUONG" Type="System.Data.Linq.Binary" DbType="VarBinary(200)" CanBeNull="true" />
+      <Column Name="TENDN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="MATKHAU" Type="System.Data.Linq.Binary" DbType="VarBinary(200) NOT NULL" CanBeNull="false" />
+      <Column Name="PUBKEY" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.xlThemLopHocPhan01" Method="xlThemLopHocPhan01">
+    <Parameter Name="malop" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="tenlop" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="manv" Type="System.String" DbType="VarChar(20)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.xlNhapDiem" Method="xlNhapDiem">
+    <Parameter Name="masv" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="mahp" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="diemthi" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="publickey" Type="System.String" DbType="VarChar(100)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.xlXemDiemThi" Method="xlXemDiemThi">
+    <Parameter Name="manv" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="pass" Type="System.String" DbType="NVarChar(20)" />
+    <ElementType Name="xlXemDiemThiResult">
+      <Column Name="MASV" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="HOTEN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="" Member="Column1" Type="System.String" DbType="VarChar(200)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.xlXemDSSV" Method="xlXemDSSV">
+    <Parameter Name="manv" Type="System.String" DbType="VarChar(20)" />
+    <ElementType Name="xlXemDSSVResult">
+      <Column Name="MASV" Type="System.String" DbType="NVarChar(20) NOT NULL" CanBeNull="false" />
+      <Column Name="NGAYSINH" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DIACHI" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="TENDN" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.xlUpdateSV" Method="xlUpdateSV">
+    <Parameter Name="masv" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="hoten" Type="System.String" DbType="NVarChar(100)" />
+    <Parameter Name="ngaysinh" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="diachi" Type="System.String" DbType="NVarChar(200)" />
+    <Parameter Name="malop" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="matkhau" Type="System.String" DbType="NVarChar(16)" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
